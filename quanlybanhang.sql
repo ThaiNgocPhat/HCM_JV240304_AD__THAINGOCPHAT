@@ -16,7 +16,7 @@ create table Room (
     status tinyint default 1 check (status in (0, 1)),
     price float not null check (price >= 100000),
     salePrice float default 0,
-    createdDate timestamp default CURRENT_TIMESTAMP,
+    createdDate timestamp default current_timestamp,
     categoryId int not null,
     foreign key (categoryId) references Category(id),
     index idx_name (name),
@@ -272,8 +272,8 @@ for each row
 begin
     if new.price > 5000000 then
     update Room set price = 5000000 where id = new.id;
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Giá phòng lớn hơn 5 triệu';
-    END IF;
+    SIGNAL SQLSTATE '45000' set message_text = 'Giá phòng lớn hơn 5 triệu';
+    end if;
 end//
 delimiter ;
 
