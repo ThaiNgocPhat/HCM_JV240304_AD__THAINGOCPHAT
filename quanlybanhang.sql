@@ -273,17 +273,9 @@ BEGIN
         r.salePrice
     FROM Room r
     LIMIT v_start, p_limit;
-    
-    -- Lấy tổng số phòng
     SELECT COUNT(*) AS 'Total Rows' FROM Room;
-    
-    -- Lấy tổng số trang
     SELECT CEIL(COUNT(*) / p_limit) AS 'Total Pages' FROM Room;
-    
-    -- Lấy tổng số phòng đang hoạt động
     SELECT COUNT(*) AS 'Active Rooms' FROM Room WHERE status = 1;
-    
-    -- Lấy tổng số phòng ẩn
     SELECT COUNT(*) AS 'Hidden Rooms' FROM Room WHERE status = 0;
 END//
 
