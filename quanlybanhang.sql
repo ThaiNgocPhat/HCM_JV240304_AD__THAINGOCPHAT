@@ -259,28 +259,7 @@ delimiter ;
 
 -- 3.Thủ tục getRoomPaginate lấy danh sách phòng có phân trang gồm : id,name,price
 -- saleprice , khi gọi thủ tục truyền vào limit và page
-DELIMITER //
-CREATE PROCEDURE getRoomPaginate(
-    IN p_limit INT,
-    IN p_page INT
-)
-BEGIN
-    DECLARE v_start INT;
-    SET v_start = (p_page - 1) * p_limit;
-    SELECT
-        r.id,
-        r.name,
-        r.price,
-        r.salePrice
-    FROM Room r
-    LIMIT v_start, p_limit;
-    SELECT COUNT(*) AS 'Total Rows' FROM Room;
-    SELECT CEIL(COUNT(*) / p_limit) AS 'Total Pages' FROM Room;
-    SELECT COUNT(*) AS 'Active Rooms' FROM Room WHERE status = 1;
-    SELECT COUNT(*) AS 'Hidden Rooms' FROM Room WHERE status = 0;
-END//
 
-DELIMITER ;
 
 
 -- ------------------------YÊU CẦU 4---------------------------
