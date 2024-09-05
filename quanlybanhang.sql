@@ -1,5 +1,6 @@
 create database Quanlybanhang;
 use Quanlybanhang;
+drop database Quanlybanhang;
 
 -- tạo bảng Category
 create table Category (
@@ -294,5 +295,28 @@ begin
     update Room set price = 5000000 where id = new.id;
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Giá phòng lớn hơn 5 triệu';
     END IF;
+end//
+delimiter ;
+
+
+-- 2.Tạo trigger tr_check_Room_NotAllow khi thực hiện đặt phòng, nêú ngày đến (startdate)
+-- và ngày đi (enddate) của đơn hiện tại mà phòng đã có người đặt rồi thì in ra thông báo 'Phòng đã có người đặt'
+delimiter //
+create trigger tr_check_Room_NotAllow
+before insert on BookingDetail
+for each row
+begin
+    if exists (
+        select 1
+        from BookingDetail
+        where roomId = new.roomId
+        and (
+            (new.startDate < endDate and new.endDate > startDate)
+        )
+        and bookingId != new.bookingId
+    ) then
+        signal sqlstate '45000'
+        set message_text = 'Phòng đã có người đặt trong khoảng thời gian này';
+    end if;
 end//
 delimiter ;
